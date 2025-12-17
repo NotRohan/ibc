@@ -1,26 +1,9 @@
-import { Close } from "@mui/icons-material";
-import {
-  Autocomplete,
-  IconButton,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import React from "react";
 import { updateUser } from "../../redux/action/user";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  PiHandCoins,
-  PiHouseLine,
-  PiImage,
-  PiImages,
-  PiMapPinLine,
-  PiNotepad,
-  PiRuler,
-  PiXLight,
-} from "react-icons/pi";
+import { PiNotepad, PiXLight } from "react-icons/pi";
 import {
   Divider,
   Dialog,
@@ -29,20 +12,18 @@ import {
   Slide,
   DialogActions,
 } from "@mui/material";
-import { pakistanCities } from "../../constant";
-import { CFormSelect } from "@coreui/react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const EditModal = ({ open, setOpen }) => {
+const EditClientModal = ({ open, setOpen }) => {
   /////////////////////////////////////// VARIABLES ///////////////////////////////////////
   const dispatch = useDispatch();
   const { currentEmployee, isFetching, error } = useSelector(
     (state) => state.user
   );
-  const initialEmployeeState = {
+  const initialClientState = {
     firstName: "",
     lastName: "",
     username: "",
@@ -51,22 +32,24 @@ const EditModal = ({ open, setOpen }) => {
   };
 
   /////////////////////////////////////// STATES ///////////////////////////////////////
-  const [employeeData, setEmployeeData] = useState(currentEmployee);
+  const [clientData, setClientData] = useState(currentEmployee);
   /////////////////////////////////////// USE EFFECT ///////////////////////////////////////
   useEffect(() => {
-    setEmployeeData(currentEmployee);
+    setClientData(currentEmployee);
   }, [currentEmployee]);
 
   /////////////////////////////////////// FUNCTIONS ///////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(currentEmployee._id, employeeData, employeeData?.role));
-    setEmployeeData(initialEmployeeState);
+    dispatch(
+      updateUser(currentEmployee._id, clientData, currentEmployee?.role)
+    );
+    setClientData(initialClientState);
     setOpen(false);
   };
 
   const handleInputChange = (field, value) => {
-    setEmployeeData((prevFilters) => ({ ...prevFilters, [field]: value }));
+    setClientData((prevFilters) => ({ ...prevFilters, [field]: value }));
   };
 
   const handleClose = () => {
@@ -85,7 +68,7 @@ const EditModal = ({ open, setOpen }) => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle className="flex items-center justify-between">
-        <div className="text-sky-400 font-primary">Edit Employee</div>
+        <div className="text-sky-400 font-primary">Edit Client</div>
         <div className="cursor-pointer" onClick={handleClose}>
           <PiXLight className="text-[25px]" />
         </div>
@@ -94,7 +77,7 @@ const EditModal = ({ open, setOpen }) => {
         <div className="flex flex-col gap-2 p-3 text-gray-500 font-primary">
           <div className="text-xl flex justify-start items-center gap-2 font-normal">
             <PiNotepad size={23} />
-            <span>Employee Detials</span>
+            <span>Client Details</span>
           </div>
           <Divider />
           <table className="mt-4">
@@ -104,7 +87,7 @@ const EditModal = ({ open, setOpen }) => {
                 <TextField
                   size="small"
                   fullWidth
-                  value={employeeData?.firstName}
+                  value={clientData?.firstName}
                   onChange={(e) =>
                     handleInputChange("firstName", e.target.value)
                   }
@@ -117,7 +100,7 @@ const EditModal = ({ open, setOpen }) => {
                 <TextField
                   size="small"
                   fullWidth
-                  value={employeeData?.lastName}
+                  value={clientData?.lastName}
                   onChange={(e) =>
                     handleInputChange("lastName", e.target.value)
                   }
@@ -131,7 +114,7 @@ const EditModal = ({ open, setOpen }) => {
                   size="small"
                   fullWidth
                   placeholder="Optional"
-                  value={employeeData?.email}
+                  value={clientData?.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                 />
               </td>
@@ -142,7 +125,7 @@ const EditModal = ({ open, setOpen }) => {
                 <TextField
                   size="small"
                   fullWidth
-                  value={employeeData?.username}
+                  value={clientData?.username}
                   onChange={(e) =>
                     handleInputChange("username", e.target.value)
                   }
@@ -155,7 +138,7 @@ const EditModal = ({ open, setOpen }) => {
                 <TextField
                   type="number"
                   size="small"
-                  value={employeeData?.phone}
+                  value={clientData?.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   fullWidth
                 />
@@ -185,4 +168,4 @@ const EditModal = ({ open, setOpen }) => {
   );
 };
 
-export default EditModal;
+export default EditClientModal;
